@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import { localize } from 'i18n-calypso';
 import pageRouter from 'page';
 import { connect } from 'react-redux';
-import { get, partial } from 'lodash';
+import { get } from 'lodash';
 import { saveAs } from 'browser-filesaver';
 import classNames from 'classnames';
 
@@ -50,7 +50,7 @@ import isJetpackModuleActive from 'calypso/state/selectors/is-jetpack-module-act
 import { canCurrentUser } from 'calypso/state/selectors/can-current-user';
 import config from '@automattic/calypso-config';
 
-const recordEvent = partial( recordGoogleEvent, 'Pages' );
+const recordEvent = ( event ) => recordGoogleEvent( 'Pages', event );
 const noop = () => {};
 
 function sleep( ms ) {
@@ -787,11 +787,11 @@ const mapDispatch = {
 	setPreviewUrl,
 	setLayoutFocus,
 	recordEvent,
-	recordMoreOptions: partial( recordEvent, 'Clicked More Options Menu' ),
-	recordPageTitle: partial( recordEvent, 'Clicked Page Title' ),
-	recordEditPage: partial( recordEvent, 'Clicked Edit Page' ),
-	recordViewPage: partial( recordEvent, 'Clicked View Page' ),
-	recordStatsPage: partial( recordEvent, 'Clicked Stats Page' ),
+	recordMoreOptions: () => recordEvent( 'Clicked More Options Menu' ),
+	recordPageTitle: () => recordEvent( 'Clicked Page Title' ),
+	recordEditPage: () => recordEvent( 'Clicked Edit Page' ),
+	recordViewPage: () => recordEvent( 'Clicked View Page' ),
+	recordStatsPage: () => recordEvent( 'Clicked Stats Page' ),
 	updateSiteFrontPage,
 };
 

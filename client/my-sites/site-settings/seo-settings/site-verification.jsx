@@ -3,7 +3,7 @@
  */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { get, omit, partial } from 'lodash';
+import { get, omit } from 'lodash';
 import { localize } from 'i18n-calypso';
 
 /**
@@ -243,7 +243,7 @@ class SiteVerification extends Component {
 		};
 
 		this.props.saveSiteSettings( siteId, updatedOptions );
-		this.props.trackFormSubmitted( { path } );
+		this.props.trackFormSubmitted( path );
 
 		dirtyFields.forEach( ( service ) => {
 			trackSiteVerificationUpdated( service, path );
@@ -396,6 +396,7 @@ export default connect(
 				service,
 				path,
 			} ),
-		trackFormSubmitted: partial( recordTracksEvent, 'calypso_seo_settings_form_submit' ),
+		trackFormSubmitted: ( path ) =>
+			recordTracksEvent( 'calypso_seo_settings_form_submit', { path } ),
 	}
 )( protectForm( localize( SiteVerification ) ) );

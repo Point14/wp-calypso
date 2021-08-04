@@ -4,7 +4,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { localize } from 'i18n-calypso';
-import { isEmpty, partial } from 'lodash';
+import { isEmpty } from 'lodash';
 import { ToggleControl } from '@wordpress/components';
 
 /**
@@ -175,7 +175,7 @@ export default connect(
 		};
 	},
 	{
-		trackEvent: partial( recordGoogleEvent, 'Site Settings' ),
+		trackEvent: ( event ) => recordGoogleEvent( 'Site Settings', event ),
 		updateSiteMonitorSettings,
 	}
 )( localize( SiteSettingsFormJetpackMonitor ) );

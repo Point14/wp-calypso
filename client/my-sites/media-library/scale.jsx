@@ -5,7 +5,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { debounce, partial } from 'lodash';
+import { debounce } from 'lodash';
 import { localize } from 'i18n-calypso';
 import Gridicon from 'calypso/components/gridicon';
 
@@ -143,6 +143,6 @@ class MediaLibraryScale extends Component {
 }
 
 export default connect( null, {
-	setMediaScalePreference: partial( setPreference, 'mediaScale' ),
-	saveMediaScalePreference: partial( savePreference, 'mediaScale' ),
+	setMediaScalePreference: ( value ) => setPreference( 'mediaScale', value ),
+	saveMediaScalePreference: ( value ) => savePreference( 'mediaScale', value ),
 } )( localize( MediaLibraryScale ) );

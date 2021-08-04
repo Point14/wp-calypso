@@ -5,7 +5,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { flowRight, partial } from 'lodash';
 import { localize } from 'i18n-calypso';
 
 /**
@@ -90,8 +89,6 @@ class SharingButtonsAppearance extends Component {
 
 	getPreviewElement() {
 		if ( this.props.initialized ) {
-			const changeLabel = partial( this.props.onChange, 'sharing_label' );
-
 			return (
 				<ButtonsPreview
 					isPrivateSite={ this.props.isPrivate }
@@ -100,7 +97,7 @@ class SharingButtonsAppearance extends Component {
 					buttons={ this.props.buttons }
 					showLike={ this.isLikeButtonEnabled() }
 					showReblog={ ! this.props.isJetpack && this.isReblogButtonEnabled() }
-					onLabelChange={ changeLabel }
+					onLabelChange={ ( value ) => this.props.onChange( 'sharing_label', value ) }
 					onButtonsChange={ this.props.onButtonsChange }
 				/>
 			);
@@ -166,7 +163,6 @@ class SharingButtonsAppearance extends Component {
 	render() {
 		// Disable classname namespace because `sharing-buttons` makes the most sense here
 		/* eslint-disable wpcalypso/jsx-classname-namespace */
-		const changeButtonStyle = partial( this.props.onChange, 'sharing_button_style' );
 		return (
 			<div className="sharing-buttons__panel sharing-buttons-appearance">
 				<p className="sharing-buttons-appearance__description">
@@ -179,7 +175,7 @@ class SharingButtonsAppearance extends Component {
 
 				<div className="sharing-buttons__fieldset-group">
 					<ButtonsStyle
-						onChange={ changeButtonStyle }
+						onChange={ ( value ) => this.props.onChange( 'sharing_button_style', value ) }
 						value={ this.props.values.sharing_button_style }
 						disabled={ ! this.props.initialized }
 					/>
@@ -216,4 +212,4 @@ const connectComponent = connect(
 	{ recordGoogleEvent, recordTracksEvent }
 );
 
-export default flowRight( connectComponent, localize )( SharingButtonsAppearance );
+export default connectComponent( localize( SharingButtonsAppearance ) );
