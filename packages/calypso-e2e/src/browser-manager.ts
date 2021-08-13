@@ -126,12 +126,12 @@ export async function clearAuthenticationState( page: Page ): Promise< void > {
 	const currentURL = page.url();
 
 	// Navigate to the WordPress.com base URL.
-	await page.goto( 'https://r-login.wordpress.com/' );
+	await page.goto( 'https://r-login.wordpress.com/', { waitUntil: 'networkidle' } );
 	// Clear local storage.
 	await page.evaluate( 'localStorage.clear();' );
 	// Lastly, clear the cookies using built-in method.
 	await browserContext.clearCookies();
 	await page.waitForTimeout( 1000 );
 	// Previous steps navigated page away from target page. Return page to the original URL.
-	await page.goto( currentURL );
+	await page.goto( currentURL, { waitUntil: 'networkidle' } );
 }
