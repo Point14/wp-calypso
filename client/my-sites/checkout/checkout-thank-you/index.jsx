@@ -19,6 +19,7 @@ import ChargebackDetails from './chargeback-details';
 import CheckoutThankYouFeaturesHeader from './features-header';
 import CheckoutThankYouHeader from './header';
 import DomainMappingDetails from './domain-mapping-details';
+import DomainMappingThankYou from './domain-mapping-thank-you';
 import DomainRegistrationDetails from './domain-registration-details';
 import { fetchReceipt } from 'calypso/state/receipts/actions';
 import { fetchSitePlans, refreshSitePlans } from 'calypso/state/sites/plans/actions';
@@ -395,6 +396,7 @@ export class CheckoutThankYou extends React.Component {
 		let wasEcommercePlanPurchased = false;
 		let wasMarketplaceProduct = false;
 		let delayedTransferPurchase = false;
+		let wasDomainMappingOnlyProduct = false;
 
 		if ( this.isDataLoaded() && ! this.isGenericReceipt() ) {
 			purchases = getPurchases( this.props );
@@ -403,6 +405,7 @@ export class CheckoutThankYou extends React.Component {
 			wasEcommercePlanPurchased = purchases.some( isEcommerce );
 			delayedTransferPurchase = find( purchases, isDelayedDomainTransfer );
 			wasMarketplaceProduct = purchases.some( isMarketplaceProduct );
+			wasDomainMappingOnlyProduct = purchases.some( isDomainMapping );
 		}
 
 		// this placeholder is using just wp logo here because two possible states do not share a common layout
@@ -475,6 +478,8 @@ export class CheckoutThankYou extends React.Component {
 					<PlanThankYouCard siteId={ this.props.selectedSite.ID } { ...planProps } />
 				</Main>
 			);
+		} else if ( wasDomainMappingOnlyProduct ) {
+			return <DomainMappingThankYou />;
 		}
 
 		if ( this.props.domainOnlySiteFlow && purchases.length > 0 && ! failedPurchases.length ) {
