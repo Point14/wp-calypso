@@ -19,7 +19,7 @@ import ChargebackDetails from './chargeback-details';
 import CheckoutThankYouFeaturesHeader from './features-header';
 import CheckoutThankYouHeader from './header';
 import DomainMappingDetails from './domain-mapping-details';
-import DomainMappingThankYou from './domain-mapping-thank-you';
+import DomainMappingThankYou from './domains/domain-mapping-thank-you';
 import DomainRegistrationDetails from './domain-registration-details';
 import { fetchReceipt } from 'calypso/state/receipts/actions';
 import { fetchSitePlans, refreshSitePlans } from 'calypso/state/sites/plans/actions';
