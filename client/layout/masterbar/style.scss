@@ -537,23 +537,27 @@ $autobar-height: 20px;
 .masterbar__toggle-drafts.button.is-borderless {
 	background: var( --color-surface );
 	height: 36px;
+	min-width: 36px;
 	margin: 5px 8px 5px -10px;
 	padding: 0 8px;
 	border-radius: 2px;
+	border-top-left-radius: 0;
+	border-bottom-left-radius: 0;
+	border-left: 1px solid var( --color-masterbar-background );
 	position: relative;
 	transition: all 0.2s ease-out;
+	font-size: $font-body-extra-small;
+	font-weight: 600;
+	line-height: 14px;
+	color: var( --color-text );
 
 	&:hover {
 		background-color: var( --color-neutral-0 );
-
-		.count {
-			border-color: var( --color-primary );
-			color: var( --color-primary );
-		}
+		color: var( --color-primary );
 	}
 
 	.masterbar__publish & {
-		margin-left: -20px;
+		margin-left: -13px;
 	}
 }
 
