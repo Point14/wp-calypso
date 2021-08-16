@@ -35,7 +35,7 @@ export const visibleDays = (
 		return state;
 	}
 
-	return displayRules.visible_days;
+	return displayRules.visibleDays;
 };
 
 export default keyedReducer(

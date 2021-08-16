@@ -10,13 +10,19 @@ import {
 import { registerHandlers } from 'calypso/state/data-layer/handler-registry';
 import { http } from 'calypso/state/data-layer/wpcom-http/actions';
 import { dispatchRequest } from 'calypso/state/data-layer/wpcom-http/utils';
+import fromApi, { DisplayRules } from './from-api';
 
-const fetch = ( action ) =>
+type DisplayRulesAction = {
+	type: string;
+	siteId: number;
+};
+
+const fetch = ( action: DisplayRulesAction ) =>
 	http(
 		{
 			apiNamespace: 'wpcom/v2',
 			method: 'GET',
-			path: `/sites/${ action.siteId }/activity/display-rules`,
+			path: `/sites/${ action.siteId }/rewind/policies`,
 			query: {
 				force: 'wpcom',
 			},
@@ -24,7 +30,7 @@ const fetch = ( action ) =>
 		action
 	);
 
-const onSuccess = ( { siteId }, { display_rules: displayRules } ) => [
+const onSuccess = ( { siteId }: DisplayRulesAction, displayRules: DisplayRules ) => [
 	{
 		type: ACTIVITY_LOG_DISPLAY_RULES_REQUEST_SUCCESS,
 		siteId,
@@ -36,7 +42,7 @@ const onSuccess = ( { siteId }, { display_rules: displayRules } ) => [
 	},
 ];
 
-const onError = ( { siteId } ) => ( {
+const onError = ( { siteId }: DisplayRulesAction ) => ( {
 	type: ACTIVITY_LOG_DISPLAY_RULES_REQUEST_FAILURE,
 	siteId,
 } );
@@ -45,6 +51,7 @@ registerHandlers( 'state/data-layer/wpcom/activity-log/get-display-rules', {
 	[ ACTIVITY_LOG_DISPLAY_RULES_REQUEST ]: [
 		dispatchRequest( {
 			fetch,
+			fromApi,
 			onSuccess,
 			onError,
 		} ),
