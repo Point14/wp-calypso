@@ -23,8 +23,8 @@ import isJetpackCloud from 'calypso/lib/jetpack/is-jetpack-cloud';
 import {
 	PLAN_JETPACK_SECURITY_DAILY,
 	PLAN_JETPACK_SECURITY_DAILY_MONTHLY,
-	PLAN_JETPACK_SECURITY,
-	PLAN_JETPACK_SECURITY_MONTHLY,
+	PLAN_JETPACK_SECURITY_T1_YEARLY,
+	PLAN_JETPACK_SECURITY_T1_MONTHLY,
 } from '@automattic/calypso-products';
 import { getCurrentUserCurrencyCode } from 'calypso/state/currency-code/selectors';
 import getSitePlan from 'calypso/state/sites/selectors/get-site-plan';
@@ -179,7 +179,10 @@ const ProductGrid: React.FC< ProductsGridProps > = ( {
 	);
 
 	const featuredPlans = getForCurrentCROIteration( {
-		[ Iterations.ONLY_REALTIME_PRODUCTS ]: [ PLAN_JETPACK_SECURITY, PLAN_JETPACK_SECURITY_MONTHLY ],
+		[ Iterations.ONLY_REALTIME_PRODUCTS ]: [
+			PLAN_JETPACK_SECURITY_T1_YEARLY,
+			PLAN_JETPACK_SECURITY_T1_MONTHLY,
+		],
 	} ) ?? [ PLAN_JETPACK_SECURITY_DAILY, PLAN_JETPACK_SECURITY_DAILY_MONTHLY ];
 
 	return (
