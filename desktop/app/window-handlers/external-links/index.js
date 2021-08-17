@@ -20,7 +20,7 @@ module.exports = function ( { view } ) {
 			referrer,
 			postBody
 		) {
-			if ( url.includes( 'https://accounts.google.com' ) ) {
+			if ( url.includes( 'https://accounts.google.com/o/oauth2' ) ) {
 				event.preventDefault();
 				const win = new BrowserWindow( {
 					webContents: options.webContents, // use existing webContents if provided
@@ -37,15 +37,18 @@ module.exports = function ( { view } ) {
 
 				win.webContents.session.webRequest.onBeforeSendHeaders( ( details, callback ) => {
 					const userAgent = details.requestHeaders[ 'User-Agent' ];
-					details.requestHeaders[ 'User-Agent' ] = userAgent.replace(
-						/Electron\/(\d+).(\d+).(\d+)(\s)*/,
-						''
-					);
-					callback( { requestHeaders: details.requestHeaders } );
+					if ( userAgent ) {
+						details.requestHeaders[ 'User-Agent' ] = userAgent.replace(
+							/Electron\/(\d+).(\d+).(\d+)(\s)*/,
+							''
+						);
+						callback( { requestHeaders: details.requestHeaders } );
+					}
 				} );
 
 				win.once( 'ready-to-show', () => win.show() );
 				if ( ! options.webContents ) {
+					log.info( 'Google Window: no webcontents' );
 					const loadOptions = {
 						httpReferrer: referrer,
 					};

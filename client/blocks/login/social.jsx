@@ -1,5 +1,7 @@
+/* eslint-disable no-console */
 import config from '@automattic/calypso-config';
 import { Card } from '@automattic/components';
+import debugFactory from 'debug';
 import { localize } from 'i18n-calypso';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
@@ -43,9 +45,14 @@ class SocialLoginForm extends Component {
 		linkingSocialService: '',
 	};
 
+	debug = debugFactory( 'social:login' );
+
 	handleGoogleResponse = ( response, triggeredByUser = true ) => {
 		const { onSuccess, socialService } = this.props;
 		let redirectTo = this.props.redirectTo;
+		console.log(
+			`>>> Log in with Google. triggeredByUser is ${ triggeredByUser }, redirectTo: ${ redirectTo }`
+		);
 
 		if ( ! response.getAuthResponse ) {
 			return;
@@ -146,6 +153,10 @@ class SocialLoginForm extends Component {
 
 	trackLoginAndRememberRedirect = ( service ) => {
 		this.recordEvent( 'calypso_login_social_button_click', service );
+		// Note: Google: this.props.redirectTo is resolving to 'null'
+		console.log(
+			`this.props.redirect_to: ${ this.props.redirectTo }, typeof window ${ typeof window }`
+		);
 
 		if ( this.props.redirectTo && typeof window !== 'undefined' ) {
 			window.sessionStorage.setItem( 'login_redirect_to', this.props.redirectTo );
