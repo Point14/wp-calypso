@@ -19,8 +19,12 @@ export const LocaleProvider: React.FC< Props > = ( { children, localeSlug } ) =>
  * @param {string} locale locale to be converted e.g. "en_US".
  * @returns locale string e.g. "en"
  */
-function mapLangToLocaleSlug( locale: Locale = '' ): Locale {
-	const TARGET_LOCALES = [ 'pt_br', 'pt-br', 'zh_tw', 'zh-tw', 'zh_cn', 'zh-cn' ];
+function mapWpI18nLangToLocaleSlug( locale: Locale = '' ): Locale {
+	if ( ! locale ) {
+		return '';
+	}
+
+	const TARGET_LOCALES = [ 'pt_br', 'pt-br', 'zh_tw', 'zh-tw', 'zh_cn', 'zh-cn', 'zh_sg', 'zh-sg' ];
 	const lowerCaseLocale = locale.toLowerCase();
 	const formattedLocale = TARGET_LOCALES.includes( lowerCaseLocale )
 		? lowerCaseLocale.replace( '_', '-' )
@@ -35,7 +39,7 @@ function mapLangToLocaleSlug( locale: Locale = '' ): Locale {
 function getWpI18nLocaleSlug(): string | undefined {
 	const language = i18n.getLocaleData ? i18n.getLocaleData()?.[ '' ]?.language : '';
 
-	return mapLangToLocaleSlug( language );
+	return mapWpI18nLangToLocaleSlug( language );
 }
 
 /**
