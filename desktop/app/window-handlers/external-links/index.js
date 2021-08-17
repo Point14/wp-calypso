@@ -13,10 +13,10 @@ module.exports = function ( { view } ) {
 		function (
 			event,
 			url,
-			frameName,
-			disposition,
+			_frameName,
+			_disposition,
 			options,
-			additionalFeatures,
+			_additionalFeatures,
 			referrer,
 			postBody
 		) {
@@ -35,13 +35,22 @@ module.exports = function ( { view } ) {
 					log.info( 'Google Window will redirect: ' + u );
 				} );
 
+				win.webContents.session.webRequest.onBeforeSendHeaders( ( details, callback ) => {
+					const userAgent = details.requestHeaders[ 'User-Agent' ];
+					details.requestHeaders[ 'User-Agent' ] = userAgent.replace(
+						/Electron\/(\d+).(\d+).(\d+)(\s)*/,
+						''
+					);
+					callback( { requestHeaders: details.requestHeaders } );
+				} );
+
 				win.once( 'ready-to-show', () => win.show() );
 				if ( ! options.webContents ) {
 					const loadOptions = {
 						httpReferrer: referrer,
 					};
 					if ( postBody != null ) {
-						const { data, contentType, boundary } = postBody;
+						const { contentType, boundary } = postBody;
 						loadOptions.postData = postBody.data;
 						loadOptions.extraHeaders = `content-type: ${ contentType }; boundary=${ boundary }`;
 					}
@@ -88,5 +97,16 @@ module.exports = function ( { view } ) {
 			//log.info( 'Redirecting to URL: ', url );
 			view.webContents.loadURL( url );
 		}
+	} );
+
+	view.webContents.session.webRequest.onBeforeSendHeaders( ( details, callback ) => {
+		const userAgent = details.requestHeaders[ 'User-Agent' ];
+		if ( userAgent ) {
+			details.requestHeaders[ 'User-Agent' ] = userAgent.replace(
+				/Electron\/(\d+).(\d+).(\d+)(\s)*/,
+				''
+			);
+		}
+		callback( { requestHeaders: details.requestHeaders } );
 	} );
 };
